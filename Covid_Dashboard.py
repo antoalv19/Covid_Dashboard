@@ -167,6 +167,73 @@ app.layout = html.Div([
     html.H1("Dashboard Andamento Covid 19", style={"textAlign": "center"}),
     # Divido la dashboard in Tabs
     dcc.Tabs(id="tabs", children=[
+        # Imposto layout terzo tab
+        dcc.Tab(label="Riassunto Andamento Nazionale", children=[
+            html.Div([
+                # Imposto titolo della tabella
+                html.H2("Tabella di Sintesi aggiornata al {}".format(str(regioni["data_range"].max())[:10]),
+                        style={"textAlign": "center"}),
+                dash_table.DataTable(
+                    style_cell={'textAlign': 'right'},
+                    style_data={
+                        'whiteSpace': 'normal',
+                    },
+                    style_cell_conditional=[
+                        {
+                            'if': {'column_id': 'Var. Assoluta'},
+                            'textAlign': 'center'
+                        },
+                        {
+                            'if': {'column_id': 'Var. Percentuale'},
+                            'textAlign': 'center'
+                        },
+                        {
+                            'if': {'column_id': merge_var.columns[1]},
+                            'textAlign': 'center'
+                        },
+                        {
+                            'if': {'column_id': merge_var.columns[2]},
+                            'textAlign': 'center'
+                        }
+                    ],
+                    id="table",
+                    columns=[{
+                        'id': merge_var.columns[0],
+                        'name': merge_var.columns[0],
+                        'type': 'text'
+                    }, {
+                        'id': merge_var.columns[1],
+                        'name': merge_var.columns[1],
+                        'type': 'numeric',
+                        'format': Format(group=',')
+                    }, {
+                        'id': merge_var.columns[2],
+                        'name': merge_var.columns[2],
+                        'type': 'numeric',
+                        'format': Format(group=',')
+                    }, {
+                        'id': merge_var.columns[3],
+                        'name': merge_var.columns[3],
+                        'type': 'numeric',
+                        'format': Format(group=',')
+                    }, {
+                        'id': merge_var.columns[4],
+                        'name': merge_var.columns[4],
+                        'type': 'numeric',
+                        'format': FormatTemplate.percentage(2).sign(Sign.positive),
+                    },
+
+                    ],
+                    data=merge_var.to_dict("records")
+                ),
+                dcc.Graph(id="my_graph_total",
+                          figure={
+                              "data": data_tot,
+                              "layout": tot_layout,
+                          }
+                          ),
+            ])
+        ]),
         # Imposto layout primo Tab
         dcc.Tab(label="Analisi Singola Regione", children=[
             # Div che contiene il selezionatore della regione
@@ -286,69 +353,6 @@ app.layout = html.Div([
                       }),
 
         ]),
-        # Imposto layout terzo tab
-        dcc.Tab(label="Riassunto Andamento Nazionale", children=[
-            dcc.Graph(id="my_graph_total",
-                      figure={
-                          "data": data_tot,
-                          "layout": tot_layout,
-                      }
-                      ),
-            html.P(
-                dash_table.DataTable(
-                    style_cell={'textAlign': 'left'},
-                    style_data={
-                        'whiteSpace': 'normal',
-                    },
-                    style_cell_conditional=[
-                        {
-                            'if': {'column_id': 'Var. Assoluta'},
-                            'textAlign': 'center'
-                        },
-                        {
-                            'if': {'column_id': 'Var. Percentuale'},
-                            'textAlign': 'center'
-                        },
-                        {
-                            'if': {'column_id': merge_var.columns[1]},
-                            'textAlign': 'center'
-                        },
-                        {
-                            'if': {'column_id': merge_var.columns[2]},
-                            'textAlign': 'center'
-                        }
-                    ],
-                    id="table",
-                    columns=[{
-                        'id': merge_var.columns[0],
-                        'name': merge_var.columns[0],
-                        'type': 'text'
-                    }, {
-                        'id': merge_var.columns[1],
-                        'name': merge_var.columns[1],
-                        'type': 'numeric',
-                        'format': Format(group=',')
-                    }, {
-                        'id': merge_var.columns[2],
-                        'name': merge_var.columns[2],
-                        'type': 'numeric',
-                        'format': Format(group=',')
-                    }, {
-                        'id': merge_var.columns[3],
-                        'name': merge_var.columns[3],
-                        'type': 'numeric',
-                        'format': Format(group=',')
-                    }, {
-                        'id': merge_var.columns[4],
-                        'name': merge_var.columns[4],
-                        'type': 'numeric',
-                        'format': FormatTemplate.percentage(2).sign(Sign.positive),
-                    },
-
-                    ],
-                    data=merge_var.to_dict("records")
-                ))
-        ])
     ])
 ])
 
