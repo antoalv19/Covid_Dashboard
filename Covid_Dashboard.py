@@ -114,11 +114,11 @@ app.layout = html.Div([
                 dcc.Dropdown(
                     id="my_region_2",
                     options=options,
-                    value=["Lombardia", "Campania"],
+                    value=["Lombardia", "Campania", "Emilia Romagna", "Veneto", "Piemonte"],
                     multi=True
                 ),
 
-            ], style={"display": "inline-block", "verticalAlign": "top", "width": "20%"}),
+            ], style={"display": "inline-block", "verticalAlign": "top", "width": "40%"}),
             # aggiungo un Div per contenere il date picker
             html.Div([
                 html.H3("Seleziona un range di date:"),
@@ -146,6 +146,42 @@ app.layout = html.Div([
                           ]
                       }
                       ),
+            dcc.Graph(id="my_graph_3",
+                      figure={
+                          "data": [
+                              {"x": [1, 2], "y": [3, 1]}
+                          ]
+                      }),
+            dcc.Graph(id="my_graph_4",
+                      figure={
+                          "data": [
+                              {"x": [1, 2], "y": [3, 1]}
+                          ]
+                      }),
+            dcc.Graph(id="my_graph_5",
+                      figure={
+                          "data": [
+                              {"x": [1, 2], "y": [3, 1]}
+                          ]
+                      }),
+            dcc.Graph(id="my_graph_6",
+                      figure={
+                          "data": [
+                              {"x": [1, 2], "y": [3, 1]}
+                          ]
+                      }),
+            dcc.Graph(id="my_graph_7",
+                      figure={
+                          "data": [
+                              {"x": [1, 2], "y": [3, 1]}
+                          ]
+                      }),
+            dcc.Graph(id="my_graph_8",
+                      figure={
+                          "data": [
+                              {"x": [1, 2], "y": [3, 1]}
+                          ]
+                      }),
 
         ])
     ])
@@ -244,7 +280,7 @@ def update_graph_2(n_clicks, region_list, start_date, end_date):
     layout_regione = go.Layout(
         title="Andamento Casi Positivi per Regione",
         xaxis=dict(title="Data Rilevazione"),
-        yaxis=dict(title="Numero Casi Positivi"),
+        yaxis=dict(title="Numero Casi Attualmente Positivi"),
         hovermode="closest"
     )
 
@@ -253,6 +289,181 @@ def update_graph_2(n_clicks, region_list, start_date, end_date):
         "layout": layout_regione
     }
     return graph_2
+
+
+@app.callback(
+    Output("my_graph_3", "figure"),
+    [Input("submit-button_2", "n_clicks")],
+    [State("my_region_2", "value"),
+     State("my_date_picker_2", "start_date"),
+     State("my_date_picker_2", "end_date")]
+)
+def update_graph_3(n_clicks, region_list, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_region = regioni[regioni["denominazione_regione"].isin(region_list)
+                        & regioni["data_range"].ge(start_date)
+                        & regioni["data_range"].le(end_date)]
+    data = []
+    for regione in region_list:
+        trace = go.Scatter(
+            x=df_region["data"].unique(),
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["deceduti"],
+            mode="lines+markers",
+            name=regione)
+        data.append(trace)
+
+    layout_regione = go.Layout(
+        title="Andamento Decessi per Regione",
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero Decessi"),
+        hovermode="closest"
+    )
+
+    graph_3 = {
+        "data": data,
+        "layout": layout_regione
+    }
+    return graph_3
+
+
+@app.callback(
+    Output("my_graph_4", "figure"),
+    [Input("submit-button_2", "n_clicks")],
+    [State("my_region_2", "value"),
+     State("my_date_picker_2", "start_date"),
+     State("my_date_picker_2", "end_date")]
+)
+def update_graph_4(n_clicks, region_list, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_region = regioni[regioni["denominazione_regione"].isin(region_list)
+                        & regioni["data_range"].ge(start_date)
+                        & regioni["data_range"].le(end_date)]
+    data = []
+    for regione in region_list:
+        trace = go.Scatter(
+            x=df_region["data"].unique(),
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["dimessi_guariti"],
+            mode="lines+markers",
+            name=regione)
+        data.append(trace)
+
+    layout_regione = go.Layout(
+        title="Andamento Dimessi Guariti per Regione",
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero Dimessi Guariti"),
+        hovermode="closest"
+    )
+
+    graph_4 = {
+        "data": data,
+        "layout": layout_regione
+    }
+    return graph_4
+
+
+@app.callback(
+    Output("my_graph_5", "figure"),
+    [Input("submit-button_2", "n_clicks")],
+    [State("my_region_2", "value"),
+     State("my_date_picker_2", "start_date"),
+     State("my_date_picker_2", "end_date")]
+)
+def update_graph_5(n_clicks, region_list, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_region = regioni[regioni["denominazione_regione"].isin(region_list)
+                        & regioni["data_range"].ge(start_date)
+                        & regioni["data_range"].le(end_date)]
+    data = []
+    for regione in region_list:
+        trace = go.Scatter(
+            x=df_region["data"].unique(),
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["terapia_intensiva"],
+            mode="lines+markers",
+            name=regione)
+        data.append(trace)
+
+    layout_regione = go.Layout(
+        title="Andamento Ricoverati in Terapia Intensiva per Regione",
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero Ricoverati in Terapia Intensiva"),
+        hovermode="closest"
+    )
+
+    graph_5 = {
+        "data": data,
+        "layout": layout_regione
+    }
+    return graph_5
+
+
+@app.callback(
+    Output("my_graph_6", "figure"),
+    [Input("submit-button_2", "n_clicks")],
+    [State("my_region_2", "value"),
+     State("my_date_picker_2", "start_date"),
+     State("my_date_picker_2", "end_date")]
+)
+def update_graph_6(n_clicks, region_list, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_region = regioni[regioni["denominazione_regione"].isin(region_list)
+                        & regioni["data_range"].ge(start_date)
+                        & regioni["data_range"].le(end_date)]
+    data = []
+    for regione in region_list:
+        trace = go.Scatter(
+            x=df_region["data"].unique(),
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["ricoverati_con_sintomi"],
+            mode="lines+markers",
+            name=regione)
+        data.append(trace)
+
+    layout_regione = go.Layout(
+        title="Andamento Ricoverati con Sintomi per Regione",
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero Ricoverati con Sintomi"),
+        hovermode="closest"
+    )
+
+    graph_6 = {
+        "data": data,
+        "layout": layout_regione
+    }
+    return graph_6
+
+
+@app.callback(
+    Output("my_graph_7", "figure"),
+    [Input("submit-button_2", "n_clicks")],
+    [State("my_region_2", "value"),
+     State("my_date_picker_2", "start_date"),
+     State("my_date_picker_2", "end_date")]
+)
+def update_graph_7(n_clicks, region_list, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_region = regioni[regioni["denominazione_regione"].isin(region_list)
+                        & regioni["data_range"].ge(start_date)
+                        & regioni["data_range"].le(end_date)]
+    data = []
+    for regione in region_list:
+        trace = go.Scatter(
+            x=df_region["data"].unique(),
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["isolamento_domiciliare"],
+            mode="lines+markers",
+            name=regione)
+        data.append(trace)
+
+    layout_regione = go.Layout(
+        title="Andamento Isolamento Domiciliare per Regione",
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero di Pazienti in Isolamento"),
+        hovermode="closest"
+    )
+
+    graph_7 = {
+        "data": data,
+        "layout": layout_regione
+    }
+    return graph_7
 
 
 # Setup server clause
