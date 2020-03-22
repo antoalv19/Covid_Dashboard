@@ -8,6 +8,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 import dash_table
+import numpy as np
+import dash_table.FormatTemplate as FormatTemplate
+from dash_table.Format import Format, Scheme, Sign, Symbol
 import dash_auth
 
 # imposto account
@@ -40,6 +43,9 @@ options = [{"label": regione, "value": regione} for regione in regioni["denomina
 
 colonne = ['dimessi_guariti', 'isolamento_domiciliare', 'ricoverati_con_sintomi', 'terapia_intensiva', 'deceduti']
 
+colonne_andamento = ['dimessi_guariti', "nuovi_attualmente_positivi", 'isolamento_domiciliare',
+                     'ricoverati_con_sintomi', 'terapia_intensiva', 'deceduti', "totale_casi", "tamponi"]
+
 legenda_dict = {
     "dimessi_guariti": "Dimessi",
     "nuovi_attualmente_positivi": "Nuovi Positivi",
@@ -60,6 +66,100 @@ colori_dict = {
     "totale_casi": "#9900FF",
     "totale_attualmente_positivi": "#9900FF",
 }
+
+index_dict = {'dimessi_guariti': "Dimessi",
+              'isolamento_domiciliare': "Isolamento Domiciliare",
+              'ricoverati_con_sintomi': "Ricoverati",
+              'terapia_intensiva': "Terapia Intensiva",
+              'deceduti': "Deceduti",
+              "nuovi_attualmente_positivi": "Nuovi Positivi",
+              "totale_casi": "Totale Casi",
+              "tamponi": "Tamponi",
+              }
+
+# Preparo Grafico totale data
+
+totale_data = pd.pivot_table(data=regioni, index="data", aggfunc=np.sum)
+totale_data.reset_index(inplace=True)
+trace_1 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["deceduti"],
+    name="Deceduti",
+    marker=dict(color="#000000"),
+    mode="lines+markers",
+)
+
+trace_2 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["terapia_intensiva"],
+    name="Terapia Intensiva",
+    marker=dict(color="#FF0000"),
+    mode="lines+markers",
+)
+
+trace_3 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["ricoverati_con_sintomi"],
+    name="Ricoverati",
+    marker=dict(color="#FF6600"),
+    mode="lines+markers",
+)
+
+trace_4 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["isolamento_domiciliare"],
+    name="Isolamento Domiciliare",
+    marker=dict(color="#FFCC00"),
+    mode="lines+markers",
+)
+
+trace_5 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["dimessi_guariti"],
+    name="Guariti",
+    marker=dict(color="#00FF00"),
+    mode="lines+markers",
+)
+
+trace_6 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["nuovi_attualmente_positivi"],
+    name="Nuovi Casi",
+    marker=dict(color="#FFFF00"),
+    mode="lines+markers",
+)
+
+trace_7 = go.Scatter(
+    x=totale_data["data"].unique(),
+    y=totale_data["totale_attualmente_positivi"],
+    name="Totale Attualmente Positivi",
+    marker=dict(color="#9900FF"),
+    mode="lines+markers",
+)
+
+data_tot = [trace_1, trace_2, trace_3, trace_4, trace_5, trace_6, trace_7]
+
+tot_layout = go.Layout(
+    title='Andamento Casi Totali per Data',
+    xaxis=dict(title="Data Rilevazione"),
+    yaxis=dict(title="Numero Casi")
+)
+# Preparo tabella scostamento totale
+totale_data.set_index("data", inplace=True)
+totale_var = totale_data[colonne_andamento]
+totale_var.fillna(0).sort_index(ascending=False).head().style.background_gradient(cmap='coolwarm')
+oggi_ieri = totale_var.iloc[-2:]
+differenza = oggi_ieri.diff()[1:2].transpose()
+latest = oggi_ieri.transpose()
+merge_var = pd.merge(left=latest, right=differenza, how="left", left_on=latest.index, right_on=differenza.index)
+merge_var.set_index("key_0", inplace=True)
+merge_var.rename(index=index_dict, inplace=True)
+merge_var.columns = [merge_var.columns[0], merge_var.columns[1][:10], "Var. Assoluta"]
+merge_var.index.name = ""
+ieri = merge_var.columns[0]
+merge_var["Var. Percentuale"] = merge_var["Var. Assoluta"].div(merge_var[ieri])
+merge_var.reset_index(inplace=True)
+
 # Faccio Setup del Layout con Header, Input Box e grafico
 
 app.layout = html.Div([
@@ -188,11 +288,65 @@ app.layout = html.Div([
         ]),
         # Imposto layout terzo tab
         dcc.Tab(label="Riassunto Andamento Nazionale", children=[
+            dcc.Graph(id="my_graph_total",
+                      figure={
+                          "data": data_tot,
+                          "layout": tot_layout,
+                      }
+                      ),
             html.P(
                 dash_table.DataTable(
+                    style_cell={'textAlign': 'left'},
+                    style_data={
+                        'whiteSpace': 'normal',
+                    },
+                    style_cell_conditional=[
+                        {
+                            'if': {'column_id': 'Var. Assoluta'},
+                            'textAlign': 'center'
+                        },
+                        {
+                            'if': {'column_id': 'Var. Percentuale'},
+                            'textAlign': 'center'
+                        },
+                        {
+                            'if': {'column_id': merge_var.columns[1]},
+                            'textAlign': 'center'
+                        },
+                        {
+                            'if': {'column_id': merge_var.columns[2]},
+                            'textAlign': 'center'
+                        }
+                    ],
                     id="table",
-                    columns=[{"name": i, "id": i} for i in regioni.columns],
-                    data=regioni.to_dict("records")
+                    columns=[{
+                        'id': merge_var.columns[0],
+                        'name': merge_var.columns[0],
+                        'type': 'text'
+                    }, {
+                        'id': merge_var.columns[1],
+                        'name': merge_var.columns[1],
+                        'type': 'numeric',
+                        'format': Format(group=',')
+                    }, {
+                        'id': merge_var.columns[2],
+                        'name': merge_var.columns[2],
+                        'type': 'numeric',
+                        'format': Format(group=',')
+                    }, {
+                        'id': merge_var.columns[3],
+                        'name': merge_var.columns[3],
+                        'type': 'numeric',
+                        'format': Format(group=',')
+                    }, {
+                        'id': merge_var.columns[4],
+                        'name': merge_var.columns[4],
+                        'type': 'numeric',
+                        'format': FormatTemplate.percentage(2).sign(Sign.positive),
+                    },
+
+                    ],
+                    data=merge_var.to_dict("records")
                 ))
         ])
     ])
