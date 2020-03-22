@@ -466,6 +466,41 @@ def update_graph_7(n_clicks, region_list, start_date, end_date):
     return graph_7
 
 
+@app.callback(
+    Output("my_graph_8", "figure"),
+    [Input("submit-button_2", "n_clicks")],
+    [State("my_region_2", "value"),
+     State("my_date_picker_2", "start_date"),
+     State("my_date_picker_2", "end_date")]
+)
+def update_graph_8(n_clicks, region_list, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_region = regioni[regioni["denominazione_regione"].isin(region_list)
+                        & regioni["data_range"].ge(start_date)
+                        & regioni["data_range"].le(end_date)]
+    data = []
+    for regione in region_list:
+        trace = go.Scatter(
+            x=df_region["data"].unique(),
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["nuovi_attualmente_positivi"],
+            mode="lines+markers",
+            name=regione)
+        data.append(trace)
+
+    layout_regione = go.Layout(
+        title="Andamento Nuovi Casi Positivi per Regione",
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero Nuovi Casi"),
+        hovermode="closest"
+    )
+
+    graph_8 = {
+        "data": data,
+        "layout": layout_regione
+    }
+    return graph_8
+
+
 # Setup server clause
 
 if __name__ == "__main__":
