@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
+import dash_table
 import dash_auth
 
 # imposto account
@@ -107,6 +108,7 @@ app.layout = html.Div([
                       }
                       ),
         ]),
+        # Imposto layout secondo tab
         dcc.Tab(label="Confronto Tra Regioni", children=[
             # Div che contiene il selezionatore della regione
             html.Div([
@@ -183,6 +185,15 @@ app.layout = html.Div([
                           ]
                       }),
 
+        ]),
+        # Imposto layout terzo tab
+        dcc.Tab(label="Riassunto Andamento Nazionale", children=[
+            html.P(
+                dash_table.DataTable(
+                    id="table",
+                    columns=[{"name": i, "id": i} for i in regioni.columns],
+                    data=regioni.to_dict("records")
+                ))
         ])
     ])
 ])
