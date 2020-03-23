@@ -76,6 +76,12 @@ index_dict = {'dimessi_guariti': "Dimessi",
               "totale_casi": "Totale Casi",
               "tamponi": "Tamponi",
               }
+# Leggo Df Province
+prov_url = r"https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-province/dpc-covid19-ita-province.csv"
+provincia = pd.read_csv(prov_url, dtype=(dict(sigla_provincia=str)))
+provincia = provincia[provincia["denominazione_provincia"].ne("In fase di definizione/aggiornamento")].copy()
+provincia["data_range"] = pd.to_datetime(provincia["data"])
+provincia["data"] = provincia["data"].str[:10]
 
 # Preparo Grafico totale data
 
@@ -180,6 +186,12 @@ app.layout = html.Div([
                     },
                     style_cell_conditional=[
                         {
+                            'if': {'column_id': merge_var.columns[0]},
+                            'textAlign': 'right',
+                            "fontWeight": "bold",
+
+                        },
+                        {
                             'if': {'column_id': 'Var. Assoluta'},
                             'textAlign': 'center'
                         },
@@ -235,7 +247,7 @@ app.layout = html.Div([
             ])
         ]),
         # Imposto layout primo Tab
-        dcc.Tab(label="Analisi Singola Regione", children=[
+        dcc.Tab(label="Analisi Singola Regione / Province", children=[
             # Div che contiene il selezionatore della regione
             html.Div([
                 html.H3("Seleziona una Regione:", style={"paddingRight": "30px"}),
@@ -266,14 +278,9 @@ app.layout = html.Div([
                 ),
             ], style={"display": "inline-block"}
             ),
+            dcc.Graph(id="my_bar_chart"),
+            dcc.Graph(id="my_province_chart"),
             dcc.Graph(id="my_graph"),
-            dcc.Graph(id="my_bar_chart",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }
-                      ),
         ]),
         # Imposto layout secondo tab
         dcc.Tab(label="Confronto Tra Regioni", children=[
@@ -390,6 +397,42 @@ def update_graph(n_clicks, region, start_date, end_date):
 
 
 @app.callback(
+    Output("my_province_chart", "figure"),
+    [Input("submit-button", "n_clicks")],
+    [State("my_region", "value"),
+     State("my_date_picker", "start_date"),
+     State("my_date_picker", "end_date")]
+)
+def update_province(n_clicks, region, start_date, end_date):
+    # creo dataframe specifico con la regione selezionata:
+    df_prov = provincia[provincia["denominazione_regione"].eq(region)
+                        & provincia["data_range"].ge(start_date)
+                        & provincia["data_range"].le(end_date)]
+    prov_piv = pd.pivot_table(df_prov, index=["data", "denominazione_provincia"],
+                              aggfunc={"totale_casi": np.sum}).sort_values(by=["totale_casi"], ascending=False)
+    prov_piv.reset_index(inplace=True)
+
+    prov_graph = [go.Bar(
+        x=prov_piv["data"].unique(),
+        y=prov_piv[prov_piv["denominazione_provincia"].eq(prov)]["totale_casi"],
+        name=prov,
+    ) for prov in prov_piv["denominazione_provincia"].unique()]
+
+    prov_layout = go.Layout(
+        title="Andamento Totale Casi Positivi per Provincia in: " + region,
+        xaxis=dict(title="Data Rilevazione"),
+        yaxis=dict(title="Numero Totale Casi"),
+        barmode="stack"
+    )
+
+    fig = {
+        "data": prov_graph,
+        "layout": prov_layout
+    }
+    return fig
+
+
+@app.callback(
     Output("my_bar_chart", "figure"),
     [Input("submit-button", "n_clicks")],
     [State("my_region", "value"),
@@ -450,7 +493,6 @@ def update_graph_2(n_clicks, region_list, start_date, end_date):
         title="Andamento Casi Positivi per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero Casi Attualmente Positivi"),
-        hovermode="closest"
     )
 
     graph_2 = {
@@ -485,7 +527,6 @@ def update_graph_3(n_clicks, region_list, start_date, end_date):
         title="Andamento Decessi per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero Decessi"),
-        hovermode="closest"
     )
 
     graph_3 = {
@@ -520,7 +561,6 @@ def update_graph_4(n_clicks, region_list, start_date, end_date):
         title="Andamento Dimessi Guariti per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero Dimessi Guariti"),
-        hovermode="closest"
     )
 
     graph_4 = {
@@ -555,7 +595,6 @@ def update_graph_5(n_clicks, region_list, start_date, end_date):
         title="Andamento Ricoverati in Terapia Intensiva per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero Ricoverati in Terapia Intensiva"),
-        hovermode="closest"
     )
 
     graph_5 = {
@@ -590,7 +629,6 @@ def update_graph_6(n_clicks, region_list, start_date, end_date):
         title="Andamento Ricoverati con Sintomi per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero Ricoverati con Sintomi"),
-        hovermode="closest"
     )
 
     graph_6 = {
@@ -625,7 +663,6 @@ def update_graph_7(n_clicks, region_list, start_date, end_date):
         title="Andamento Isolamento Domiciliare per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero di Pazienti in Isolamento"),
-        hovermode="closest"
     )
 
     graph_7 = {
@@ -660,7 +697,6 @@ def update_graph_8(n_clicks, region_list, start_date, end_date):
         title="Andamento Nuovi Casi Positivi per Regione",
         xaxis=dict(title="Data Rilevazione"),
         yaxis=dict(title="Numero Nuovi Casi"),
-        hovermode="closest"
     )
 
     graph_8 = {
