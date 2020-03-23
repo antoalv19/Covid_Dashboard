@@ -79,7 +79,8 @@ index_dict = {'dimessi_guariti': "Dimessi",
 # Leggo Df Province
 prov_url = r"https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-province/dpc-covid19-ita-province.csv"
 provincia = pd.read_csv(prov_url, dtype=(dict(sigla_provincia=str)))
-provincia = provincia[provincia["denominazione_provincia"].ne("In fase di definizione/aggiornamento")].copy()
+provincia = provincia[provincia["denominazione_provincia"].ne("In fase di definizione/aggiornamento")
+                      & provincia["data"].ne("data")].copy()
 provincia["data_range"] = pd.to_datetime(provincia["data"], errors="coerce")
 provincia["data"] = provincia["data"].str[:10]
 
@@ -409,7 +410,9 @@ def update_province(n_clicks, region, start_date, end_date):
                         & provincia["data_range"].ge(start_date)
                         & provincia["data_range"].le(end_date)]
     prov_piv = pd.pivot_table(df_prov, index=["data", "denominazione_provincia"],
-                              aggfunc={"totale_casi": np.sum}).sort_values(by=["totale_casi"], ascending=False)
+                              aggfunc={"totale_casi": np.sum}).sort_values(
+        by=["denominazione_provincia", "totale_casi"],
+        ascending=False)
     prov_piv.reset_index(inplace=True)
 
     prov_graph = [go.Bar(
