@@ -80,7 +80,7 @@ index_dict = {'dimessi_guariti': "Dimessi",
 prov_url = r"https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-province/dpc-covid19-ita-province.csv"
 provincia = pd.read_csv(prov_url, dtype=(dict(sigla_provincia=str)))
 provincia = provincia[provincia["denominazione_provincia"].ne("In fase di definizione/aggiornamento")].copy()
-provincia["data_range"] = pd.to_datetime(provincia["data"])
+provincia["data_range"] = pd.to_datetime(provincia["data"], errors="coerce")
 provincia["data"] = provincia["data"].str[:10]
 
 # Preparo Grafico totale data
