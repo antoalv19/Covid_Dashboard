@@ -411,7 +411,7 @@ def update_province(n_clicks, region, start_date, end_date):
                         & provincia["data_range"].le(end_date)]
     prov_piv = pd.pivot_table(df_prov, index=["data", "denominazione_provincia"],
                               aggfunc={"totale_casi": np.sum}).sort_values(
-        by=["denominazione_provincia", "totale_casi"],
+        by=["totale_casi", "denominazione_provincia"],
         ascending=False)
     prov_piv.reset_index(inplace=True)
 
