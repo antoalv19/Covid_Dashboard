@@ -76,6 +76,29 @@ index_dict = {'dimessi_guariti': "Dimessi",
               "totale_casi": "Totale Casi",
               "tamponi": "Tamponi",
               }
+
+denom_geo = {'Campania': "Sud e Isole",
+             'Molise': "Sud e Isole",
+             'Puglia': "Sud e Isole",
+             'P.A. Trento': "Nord",
+             'Calabria': "Sud e Isole",
+             'Emilia Romagna': "Nord",
+             'Piemonte': "Nord",
+             'Liguria': "Nord",
+             'Friuli Venezia Giulia': "Nord",
+             'Veneto': "Nord",
+             'Lazio': "Centro",
+             'Basilicata': "Sud e Isole",
+             "Valle d'Aosta": "Nord",
+             'P.A. Bolzano': "Nord",
+             'Toscana': "Centro",
+             'Abruzzo': "Sud e Isole",
+             'Sardegna': "Sud e Isole",
+             'Sicilia': "Sud e Isole",
+             'Lombardia': "Nord",
+             'Marche': "Centro",
+             'Umbria': "Centro"}
+
 # Leggo Df Province
 prov_url = r"https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-province/dpc-covid19-ita-province.csv"
 provincia = pd.read_csv(prov_url, dtype=(dict(sigla_provincia=str)))
@@ -184,6 +207,45 @@ layout_new = go.Layout(
     xaxis=dict(title="Data Rilevazione"),
     yaxis=dict(title="Numero Casi"),
 
+)
+
+# Preparo Grafico e tabella andamento area geografica
+regioni["denom_geo"] = regioni["denominazione_regione"].map(denom_geo)
+tot_area_geo = regioni[regioni["data"].eq(str(regioni["data_range"].max())[:10])].sort_values(["totale_casi"],
+                                                                                              ascending=False).reset_index(
+    drop=False)
+tot_area_geo_piv = pd.pivot_table(data=tot_area_geo, index="denom_geo", aggfunc=np.sum).sort_values(by="totale_casi",
+                                                                                                    ascending=False)
+data_geo_bar = [go.Bar(
+    x=tot_area_geo_piv.index.unique(),
+    y=tot_area_geo_piv[col],
+    name=legenda_dict[col],
+    marker=dict(color=colori_dict[col]),
+    text=tot_area_geo_piv[col],
+    textposition="auto",
+    hoverinfo="text"
+) for col in colonne]
+
+layout_geo_bar = go.Layout(
+    title='Composizione Casi Totali per Area Geografica',
+    barmode='stack',
+    xaxis=dict(title="Area Geografica"),
+    yaxis=dict(title="Numero Casi"),
+)
+
+# line graph
+regioni_area_geo = pd.pivot_table(data=regioni, index=["data", "denom_geo"], aggfunc=np.sum).reset_index()
+
+data_geo_chart = [go.Scatter(
+    x=regioni_area_geo["data"].unique(),
+    y=regioni_area_geo[regioni_area_geo["denom_geo"].eq(area)]["nuovi_attualmente_positivi"],
+    mode="lines+markers",
+    name=area) for area in regioni["denom_geo"].unique()]
+
+layout_geo_chart = go.Layout(
+    title="Andamento Nuovi Casi Positivi per Area Geografica",
+    xaxis=dict(title="Data Rilevazione"),
+    yaxis=dict(title="Numero Casi Positivi"),
 )
 
 # Faccio Setup del Layout con Header, Input Box e grafico
@@ -385,6 +447,19 @@ app.layout = html.Div([
                           ]
                       }),
 
+        ]),
+        dcc.Tab(label="Confronto per Area Geografica", children=[
+            dcc.Graph(id="geo_bar",
+                      figure={
+                          "data": data_geo_bar,
+                          "layout": layout_geo_bar,
+                      }),
+            dcc.Graph(id="geo_chart",
+                      figure={
+                          "data": data_geo_chart,
+                          "layout": layout_geo_chart,
+                      }
+                      ),
         ]),
     ])
 ])
