@@ -449,17 +449,17 @@ app.layout = html.Div([
 
         ]),
         dcc.Tab(label="Confronto per Area Geografica", children=[
-            dcc.Graph(id="geo_bar",
-                      figure={
-                          "data": data_geo_bar,
-                          "layout": layout_geo_bar,
-                      }),
             dcc.Graph(id="geo_chart",
                       figure={
                           "data": data_geo_chart,
                           "layout": layout_geo_chart,
                       }
                       ),
+            dcc.Graph(id="geo_bar",
+                      figure={
+                          "data": data_geo_bar,
+                          "layout": layout_geo_bar,
+                      }),
         ]),
     ])
 ])
