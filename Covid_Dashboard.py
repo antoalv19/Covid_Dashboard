@@ -13,7 +13,6 @@ import dash_table.FormatTemplate as FormatTemplate
 from dash_table.Format import Format, Scheme, Sign, Symbol
 import dash_auth
 
-# test feature branch
 # imposto account
 # USERNAME_PASSWORD_PAIRS = [
 #    ['endony', 'endony'], ["mamama", "endony"], ["covid19", "cocchino"]]
