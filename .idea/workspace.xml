@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6e12162f-3183-4f33-830d-51e48924073b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Covid_Dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Covid_Dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app1.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1ZOfXVLDwZbmjiWUNhoyfBlvXlr" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Covid_Dashboard" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Covid_Dashboard" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Covid_Dashboard.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Covid_Dashboard" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6e12162f-3183-4f33-830d-51e48924073b" name="Default Changelist" comment="" />
+      <created>1584715100290</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584715100290</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Aggiunta secondo tab e grafici di comparazione per regione">
+      <created>1584875857391</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1584875857392</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Aggiunta secondo tab e grafici di comparazione per regione">
+      <created>1584875962776</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1584875962776</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Inserimento terzo tab e prima tabella">
+      <created>1584891082428</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1584891082428</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Aggiunta tabella riassuntiva e grafico in terzo tab">
+      <created>1584895495290</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1584895495293</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix ordine grafici primo tab">
+      <created>1584896083850</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1584896083850</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Analisi Province">
+      <created>1584977628972</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1584977628972</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix data">
+      <created>1584987124520</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1584987124520</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix data sorting">
+      <created>1584989460887</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1584989460887</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fix data sorting pt.2">
+      <created>1584989995619</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1584989995619</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Aggiunta Bar Graph nuovi casi">
+      <created>1585038984514</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1585038984514</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix Bar Graph nuovi casi">
+      <created>1585039663869</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1585039663869</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Aggiunto Nuovo Tab Area Geografica">
+      <created>1585043877065</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1585043877065</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Aggiunta secondo tab e grafici di comparazione per regione" />
+    <MESSAGE value="Inserimento terzo tab e prima tabella" />
+    <MESSAGE value="Aggiunta tabella riassuntiva e grafico in terzo tab" />
+    <MESSAGE value="Fix ordine grafici primo tab" />
+    <MESSAGE value="Analisi Province" />
+    <MESSAGE value="Fix data" />
+    <MESSAGE value="Fix data sorting" />
+    <MESSAGE value="Fix data sorting pt.2" />
+    <MESSAGE value="Aggiunta Bar Graph nuovi casi" />
+    <MESSAGE value="Fix Bar Graph nuovi casi" />
+    <MESSAGE value="Aggiunto Nuovo Tab Area Geografica" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunto Nuovo Tab Area Geografica" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="330" y="59" key="CommitChangelistDialog2" timestamp="1585051071854">
+      <screen x="0" y="23" width="1440" height="831" />
+    </state>
+    <state x="330" y="52" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1584896083596" />
+    <state x="330" y="56" key="CommitChangelistDialog2/0.23.1440.828@0.23.1440.828" timestamp="1584987124255" />
+    <state x="330" y="56" key="CommitChangelistDialog2/0.23.1440.829@0.23.1440.829" timestamp="1585043876684" />
+    <state x="330" y="56" key="CommitChangelistDialog2/0.23.1440.830@0.23.1440.830" timestamp="1584989995298" />
+    <state x="330" y="59" key="CommitChangelistDialog2/0.23.1440.831@0.23.1440.831" timestamp="1585051071854" />
+    <state x="330" y="56" key="CommitChangelistDialog2/0.23.1440.832@0.23.1440.832" timestamp="1585039663569" />
+    <state x="564" y="350" key="Github.ShareDialog" timestamp="1584821263760">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="564" y="350" key="Github.ShareDialog/0.0.1440.900@0.0.1440.900" timestamp="1584821263760" />
+    <state x="464" y="163" key="Github.UntrackedFilesDialog" timestamp="1584821271360">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="464" y="163" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1584821271360" />
+    <state width="1419" height="214" key="GridCell.Tab.0.bottom" timestamp="1585051098839">
+      <screen x="0" y="23" width="1440" height="831" />
+    </state>
+    <state width="1419" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1584896041880" />
+    <state width="1419" height="214" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1584987082989" />
+    <state width="1419" height="214" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1585043780581" />
+    <state width="1419" height="214" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1584989964426" />
+    <state width="1419" height="214" key="GridCell.Tab.0.bottom/0.23.1440.831@0.23.1440.831" timestamp="1585051098839" />
+    <state width="1419" height="214" key="GridCell.Tab.0.bottom/0.23.1440.832@0.23.1440.832" timestamp="1585039584851" />
+    <state width="1419" height="214" key="GridCell.Tab.0.center" timestamp="1585051098838">
+      <screen x="0" y="23" width="1440" height="831" />
+    </state>
+    <state width="1419" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1584896041878" />
+    <state width="1419" height="214" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1584987082988" />
+    <state width="1419" height="214" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1585043780581" />
+    <state width="1419" height="214" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1584989964425" />
+    <state width="1419" height="214" key="GridCell.Tab.0.center/0.23.1440.831@0.23.1440.831" timestamp="1585051098838" />
+    <state width="1419" height="214" key="GridCell.Tab.0.center/0.23.1440.832@0.23.1440.832" timestamp="1585039584850" />
+    <state width="1419" height="214" key="GridCell.Tab.0.left" timestamp="1585051098837">
+      <screen x="0" y="23" width="1440" height="831" />
+    </state>
+    <state width="1419" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1584896041877" />
+    <state width="1419" height="214" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1584987082988" />
+    <state width="1419" height="214" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1585043780580" />
+    <state width="1419" height="214" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1584989964424" />
+    <state width="1419" height="214" key="GridCell.Tab.0.left/0.23.1440.831@0.23.1440.831" timestamp="1585051098837" />
+    <state width="1419" height="214" key="GridCell.Tab.0.left/0.23.1440.832@0.23.1440.832" timestamp="1585039584850" />
+    <state width="1419" height="214" key="GridCell.Tab.0.right" timestamp="1585051098839">
+      <screen x="0" y="23" width="1440" height="831" />
+    </state>
+    <state width="1419" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1584896041879" />
+    <state width="1419" height="214" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1584987082989" />
+    <state width="1419" height="214" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1585043780581" />
+    <state width="1419" height="214" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1584989964425" />
+    <state width="1419" height="214" key="GridCell.Tab.0.right/0.23.1440.831@0.23.1440.831" timestamp="1585051098839" />
+    <state width="1419" height="214" key="GridCell.Tab.0.right/0.23.1440.832@0.23.1440.832" timestamp="1585039584851" />
+    <state width="1419" height="303" key="GridCell.Tab.1.bottom" timestamp="1584896365078">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1584892340367" />
+    <state width="1419" height="303" key="GridCell.Tab.1.bottom/0.23.1440.828@0.23.1440.828" timestamp="1584896365078" />
+    <state width="1419" height="303" key="GridCell.Tab.1.center" timestamp="1584896365076">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1584892340363" />
+    <state width="1419" height="303" key="GridCell.Tab.1.center/0.23.1440.828@0.23.1440.828" timestamp="1584896365076" />
+    <state width="1419" height="303" key="GridCell.Tab.1.left" timestamp="1584896365075">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1584892340362" />
+    <state width="1419" height="303" key="GridCell.Tab.1.left/0.23.1440.828@0.23.1440.828" timestamp="1584896365075" />
+    <state width="1419" height="303" key="GridCell.Tab.1.right" timestamp="1584896365077">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1584892340365" />
+    <state width="1419" height="303" key="GridCell.Tab.1.right/0.23.1440.828@0.23.1440.828" timestamp="1584896365077" />
+    <state x="221" y="89" key="SettingsEditor" timestamp="1584715531837">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="221" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1584715531837" />
+    <state x="320" y="198" key="Vcs.Push.Dialog.v2" timestamp="1585051078119">
+      <screen x="0" y="23" width="1440" height="831" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1584896087214" />
+    <state x="320" y="197" key="Vcs.Push.Dialog.v2/0.23.1440.828@0.23.1440.828" timestamp="1584987127827" />
+    <state x="320" y="197" key="Vcs.Push.Dialog.v2/0.23.1440.829@0.23.1440.829" timestamp="1585043881880" />
+    <state x="320" y="197" key="Vcs.Push.Dialog.v2/0.23.1440.830@0.23.1440.830" timestamp="1584989999371" />
+    <state x="320" y="198" key="Vcs.Push.Dialog.v2/0.23.1440.831@0.23.1440.831" timestamp="1585051078119" />
+    <state x="320" y="197" key="Vcs.Push.Dialog.v2/0.23.1440.832@0.23.1440.832" timestamp="1585039667155" />
+    <state x="397" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1584715210936">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="397" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1584715210936" />
+    <state x="503" y="361" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1585039350976">
+      <screen x="0" y="23" width="1440" height="832" />
+    </state>
+    <state x="503" y="361" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.832@0.23.1440.832" timestamp="1585039350976" />
+  </component>
+</project>
