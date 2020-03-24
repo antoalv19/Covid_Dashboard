@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e12162f-3183-4f33-830d-51e48924073b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Covid_Dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Covid_Dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app1.py" beforeDir="false" />
-    </list>
+    <list default="true" id="6e12162f-3183-4f33-830d-51e48924073b" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585043877065</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fix ordine grafici in Tab area Geografica">
+      <created>1585051072348</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1585051072348</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -190,7 +194,8 @@
     <MESSAGE value="Aggiunta Bar Graph nuovi casi" />
     <MESSAGE value="Fix Bar Graph nuovi casi" />
     <MESSAGE value="Aggiunto Nuovo Tab Area Geografica" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunto Nuovo Tab Area Geografica" />
+    <MESSAGE value="Fix ordine grafici in Tab area Geografica" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix ordine grafici in Tab area Geografica" />
   </component>
   <component name="WindowStateProjectService">
     <state x="330" y="59" key="CommitChangelistDialog2" timestamp="1585051071854">
