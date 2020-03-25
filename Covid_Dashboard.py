@@ -67,7 +67,7 @@ colori_dict = {
     "totale_attualmente_positivi": "#9900FF",
 }
 
-index_dict = {'dimessi_guariti': "Dimessi",
+index_dict = {'dimessi_guariti': "Dimessi e Guariti",
               'isolamento_domiciliare': "Isolamento Domiciliare",
               'ricoverati_con_sintomi': "Ricoverati",
               'terapia_intensiva': "Terapia Intensiva",
