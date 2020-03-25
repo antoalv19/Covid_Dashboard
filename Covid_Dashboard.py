@@ -403,49 +403,13 @@ app.layout = html.Div([
                 ),
             ], style={"display": "inline-block"}
             ),
-            dcc.Graph(id="my_graph_2",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }
-                      ),
-            dcc.Graph(id="my_graph_3",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }),
-            dcc.Graph(id="my_graph_4",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }),
-            dcc.Graph(id="my_graph_5",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }),
-            dcc.Graph(id="my_graph_6",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }),
-            dcc.Graph(id="my_graph_7",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }),
-            dcc.Graph(id="my_graph_8",
-                      figure={
-                          "data": [
-                              {"x": [1, 2], "y": [3, 1]}
-                          ]
-                      }),
+            dcc.Graph(id="my_graph_2",),
+            dcc.Graph(id="my_graph_3",),
+            dcc.Graph(id="my_graph_4",),
+            dcc.Graph(id="my_graph_5",),
+            dcc.Graph(id="my_graph_6",),
+            dcc.Graph(id="my_graph_7",),
+            dcc.Graph(id="my_graph_8",),
 
         ]),
         dcc.Tab(label="Confronto per Area Geografica", children=[
