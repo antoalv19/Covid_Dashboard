@@ -211,9 +211,8 @@ layout_new = go.Layout(
 
 # Preparo Grafico e tabella andamento area geografica
 regioni["denom_geo"] = regioni["denominazione_regione"].map(denom_geo)
-tot_area_geo = regioni[regioni["data"].eq(str(regioni["data_range"].max())[:10])].sort_values(["totale_casi"],
-                                                                                              ascending=False).reset_index(
-    drop=False)
+tot_area_geo = regioni[regioni["data"].eq(str(regioni["data_range"].max())[:10])] \
+    .sort_values(["totale_casi"], ascending=False).reset_index(drop=False)
 tot_area_geo_piv = pd.pivot_table(data=tot_area_geo, index="denom_geo", aggfunc=np.sum).sort_values(by="totale_casi",
                                                                                                     ascending=False)
 data_geo_bar = [go.Bar(
@@ -247,6 +246,19 @@ layout_geo_chart = go.Layout(
     xaxis=dict(title="Data Rilevazione"),
     yaxis=dict(title="Numero Casi Positivi"),
 )
+
+# leggo df andamento globale
+state_data = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
+state_data = state_data[state_data["total_cases"].ge(500)]
+# imposto opzioni per drop down
+country_options = [{"label": country, "value": country} for country in state_data["location"].unique()]
+
+# costruisco colonna "days_since"
+nuovo_df = pd.DataFrame()
+for location in state_data["location"].unique():
+    df_temp = state_data[state_data["location"].eq(location)].copy()
+    df_temp["days_since"] = np.arange(len(df_temp))
+    nuovo_df = pd.concat([nuovo_df, df_temp])
 
 # Faccio Setup del Layout con Header, Input Box e grafico
 
@@ -403,13 +415,13 @@ app.layout = html.Div([
                 ),
             ], style={"display": "inline-block"}
             ),
-            dcc.Graph(id="my_graph_2",),
-            dcc.Graph(id="my_graph_3",),
-            dcc.Graph(id="my_graph_4",),
-            dcc.Graph(id="my_graph_5",),
-            dcc.Graph(id="my_graph_6",),
-            dcc.Graph(id="my_graph_7",),
-            dcc.Graph(id="my_graph_8",),
+            dcc.Graph(id="my_graph_2", ),
+            dcc.Graph(id="my_graph_3", ),
+            dcc.Graph(id="my_graph_4", ),
+            dcc.Graph(id="my_graph_5", ),
+            dcc.Graph(id="my_graph_6", ),
+            dcc.Graph(id="my_graph_7", ),
+            dcc.Graph(id="my_graph_8", ),
 
         ]),
         dcc.Tab(label="Confronto per Area Geografica", children=[
@@ -426,14 +438,14 @@ app.layout = html.Div([
                       }),
         ]),
         # Imposto layout tab internazionale
-        dcc.Tab(label="Confronto tra Stati", children=[
+        dcc.Tab(label="Andamento Globale", children=[
             # Div che contiene il selezionatore della regione
             html.Div([
                 html.H3("Seleziona una Nazione:", style={"paddingRight": "30px"}),
                 dcc.Dropdown(
                     id="my_state",
-                    options=options,
-                    value=["China", "Italy"],
+                    options=country_options,
+                    value=["China", "Italy", "United States", "Spain", "France"],
                     multi=True
                 ),
 
@@ -790,6 +802,98 @@ def update_graph_8(n_clicks, region_list, start_date, end_date):
         "layout": layout_regione
     }
     return graph_8
+
+
+@app.callback(
+    Output("my_state_1", "figure"),
+    [Input("my_state", "value")],
+)
+def update_state_1(state):
+    # creo dataframe specifico con la regione selezionata:
+
+    state_graph = [go.Scatter(
+        x=nuovo_df[nuovo_df["location"].eq(country)]["days_since"],
+        y=nuovo_df[nuovo_df["location"].eq(country)]["total_cases"],
+        mode="lines+markers",
+        name=country,
+    ) for country in state]
+
+    fig = {
+        "data": state_graph,
+        "layout": {"title": "Andamento dei casi Totali di Covid",
+                   "xaxis": dict(title="Giorni Trascorsi dal 500mo Caso Rilevato"),
+                   "yaxis": dict(title="Numero Casi")}
+    }
+    return fig
+
+
+@app.callback(
+    Output("my_state_2", "figure"),
+    [Input("my_state", "value")],
+)
+def update_state_2(state):
+    # creo dataframe specifico con la regione selezionata:
+
+    state_graph = [go.Scatter(
+        x=nuovo_df[nuovo_df["location"].eq(country)]["days_since"],
+        y=nuovo_df[nuovo_df["location"].eq(country)]["total_deaths"],
+        mode="lines+markers",
+        name=country,
+    ) for country in state]
+
+    fig = {
+        "data": state_graph,
+        "layout": {"title": "Andamento dei Decessi Totali per Covid",
+                   "xaxis": dict(title="Giorni Trascorsi dal 500mo Caso Rilevato"),
+                   "yaxis": dict(title="Numero Casi")}
+    }
+    return fig
+
+
+@app.callback(
+    Output("my_state_3", "figure"),
+    [Input("my_state", "value")],
+)
+def update_state_3(state):
+    # creo dataframe specifico con la regione selezionata:
+
+    state_graph = [go.Scatter(
+        x=nuovo_df[nuovo_df["location"].eq(country)]["days_since"],
+        y=nuovo_df[nuovo_df["location"].eq(country)]["new_cases"],
+        mode="lines+markers",
+        name=country,
+    ) for country in state]
+
+    fig = {
+        "data": state_graph,
+        "layout": {"title": "Andamento dei Nuovi Casi di Covid",
+                   "xaxis": dict(title="Giorni Trascorsi dal 500mo Caso Rilevato"),
+                   "yaxis": dict(title="Numero Casi")}
+    }
+    return fig
+
+
+@app.callback(
+    Output("my_state_4", "figure"),
+    [Input("my_state", "value")],
+)
+def update_state_4(state):
+    # creo dataframe specifico con la regione selezionata:
+
+    state_graph = [go.Scatter(
+        x=nuovo_df[nuovo_df["location"].eq(country)]["days_since"],
+        y=nuovo_df[nuovo_df["location"].eq(country)]["new_deaths"],
+        mode="lines+markers",
+        name=country,
+    ) for country in state]
+
+    fig = {
+        "data": state_graph,
+        "layout": {"title": "Andamento dei Nuovi Decessi per Covid",
+                   "xaxis": dict(title="Giorni Trascorsi dal 500mo Caso Rilevato"),
+                   "yaxis": dict(title="Numero Casi")}
+    }
+    return fig
 
 
 # Setup server clause
