@@ -255,7 +255,7 @@ app.layout = html.Div([
     html.H1("Dashboard Andamento Covid 19", style={"textAlign": "center"}),
     # Divido la dashboard in Tabs
     dcc.Tabs(id="tabs", children=[
-        # Imposto layout terzo tab
+        # Imposto layout primo tab
         dcc.Tab(label="Riassunto Andamento Nazionale", children=[
             html.Div([
                 # Imposto titolo della tabella
@@ -334,7 +334,7 @@ app.layout = html.Div([
                           ),
             ])
         ]),
-        # Imposto layout primo Tab
+        # Imposto layout Tab Province
         dcc.Tab(label="Analisi Singola Regione / Province", children=[
             # Div che contiene il selezionatore della regione
             html.Div([
@@ -370,7 +370,7 @@ app.layout = html.Div([
             dcc.Graph(id="my_province_chart"),
             dcc.Graph(id="my_graph"),
         ]),
-        # Imposto layout secondo tab
+        # Imposto layout tab regioni
         dcc.Tab(label="Confronto Tra Regioni", children=[
             # Div che contiene il selezionatore della regione
             html.Div([
@@ -424,6 +424,25 @@ app.layout = html.Div([
                           "data": data_geo_bar,
                           "layout": layout_geo_bar,
                       }),
+        ]),
+        # Imposto layout tab internazionale
+        dcc.Tab(label="Confronto tra Stati", children=[
+            # Div che contiene il selezionatore della regione
+            html.Div([
+                html.H3("Seleziona una Nazione:", style={"paddingRight": "30px"}),
+                dcc.Dropdown(
+                    id="my_state",
+                    options=options,
+                    value=["China", "Italy"],
+                    multi=True
+                ),
+
+            ], style={"display": "inline-block", "verticalAlign": "top", "width": "40%"}),
+            # aggiungo i grafici
+            dcc.Graph(id="my_state_1"),
+            dcc.Graph(id="my_state_2"),
+            dcc.Graph(id="my_state_3"),
+            dcc.Graph(id="my_state_4"),
         ]),
     ])
 ])
