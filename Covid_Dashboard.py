@@ -12,9 +12,8 @@ import numpy as np
 import dash_table.FormatTemplate as FormatTemplate
 from dash_table.Format import Format, Scheme, Sign, Symbol
 import pycountry_convert as pc
-import pycountry
 import plotly.express as px
-import dash_auth
+# import dash_auth
 
 # imposto account
 # USERNAME_PASSWORD_PAIRS = [
@@ -451,8 +450,16 @@ app.layout = html.Div([
                     value=["China", "Italy", "United States", "Spain", "France"],
                     multi=True
                 ),
-
-            ], style={"display": "inline-block", "verticalAlign": "top", "width": "40%"}),
+            ], style={"display": "inline-block"}),
+            html.Div([
+                html.Button(
+                    id="submit-button_3",
+                    n_clicks=0,
+                    children="Aggiorna",
+                    style={"fontSize": 24, "marginLeft": "30px"}
+                )
+            ], style={"display": "inline-block"}
+            ),
             # aggiungo i grafici
             html.H2("Evoluzione Totale casi Attivi dal 01-01-2020 per Settimana",
                     style={"textAlign": "center"}),
@@ -812,9 +819,10 @@ def update_graph_8(n_clicks, region_list, start_date, end_date):
 
 @app.callback(
     Output("my_state_1", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_1(state):
+def update_state_1(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -835,9 +843,10 @@ def update_state_1(state):
 
 @app.callback(
     Output("my_state_2", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_2(state):
+def update_state_2(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -858,9 +867,10 @@ def update_state_2(state):
 
 @app.callback(
     Output("my_state_3", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_3(state):
+def update_state_3(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -881,9 +891,10 @@ def update_state_3(state):
 
 @app.callback(
     Output("my_state_4", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_4(state):
+def update_state_4(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -904,9 +915,10 @@ def update_state_4(state):
 
 @app.callback(
     Output("my_map", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_map(state):
+def update_map(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     # preparo dati e realizzo scatter geo
