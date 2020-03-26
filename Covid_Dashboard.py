@@ -263,26 +263,6 @@ for location in state_data["location"].unique():
     df_temp["days_since"] = np.arange(len(df_temp))
     nuovo_df = pd.concat([nuovo_df, df_temp])
 
-# preparo dati e realizzo scatter geo
-
-df_geo = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
-
-country_list = []
-i = 0
-
-while i < len(list(pycountry.countries)):
-    country_list.append(list(pycountry.countries)[i].__getattr__("name"))
-    i += 1
-
-df_geo = df_geo[df_geo["location"].isin(country_list)].copy()
-country_dict = dict([(country, pc.country_name_to_country_alpha3(country, cn_name_format="default")) for country in
-                     df_geo["location"].unique()])
-df_geo["alpha"] = df_geo["location"].map(country_dict)
-df_geo["datetime"] = pd.to_datetime(df_geo["date"])
-df_geo = df_geo[df_geo["datetime"].ge("01-01-2020")]
-df_geo["week"] = df_geo['datetime'].dt.strftime('%U').astype(int)
-df_geo.sort_values(by="week", ascending=True, inplace=True)
-
 # Faccio Setup del Layout con Header, Input Box e grafico
 
 app.layout = html.Div([
@@ -474,19 +454,10 @@ app.layout = html.Div([
 
             ], style={"display": "inline-block", "verticalAlign": "top", "width": "40%"}),
             # aggiungo i grafici
-
-            dcc.Graph(id="my_state_1"),
-            html.H2("Evoluzione Totale casi attivi dal 01-01-2020",
+            html.H2("Evoluzione Totale casi Attivi dal 01-01-2020 per Settimana",
                     style={"textAlign": "center"}),
-            dcc.Graph(id="my_map", figure=
-                px.scatter_geo(df_geo,
-                               locations="alpha",
-                               color="location",
-                               hover_name="location",
-                               size="total_cases",
-                               animation_frame="week",
-                               projection="natural earth")
-            ),
+            dcc.Graph(id="my_map"),
+            dcc.Graph(id="my_state_1"),
             dcc.Graph(id="my_state_2"),
             dcc.Graph(id="my_state_3"),
             dcc.Graph(id="my_state_4"),
@@ -928,6 +899,37 @@ def update_state_4(state):
                    "xaxis": dict(title="Giorni Trascorsi dal 500mo Caso Rilevato"),
                    "yaxis": dict(title="Numero Casi")}
     }
+    return fig
+
+
+@app.callback(
+    Output("my_map", "figure"),
+    [Input("my_state", "value")],
+)
+def update_map(state):
+    # creo dataframe specifico con la regione selezionata:
+
+    # preparo dati e realizzo scatter geo
+
+    df_geo = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
+
+    df_geo = df_geo[df_geo["location"].isin(state) & df_geo["location"].ne("World") &
+                    df_geo["location"].ne("International")].copy()
+    country_dict = dict([(country, pc.country_name_to_country_alpha3(country, cn_name_format="default")) for country in
+                         df_geo["location"].unique()])
+    df_geo["alpha"] = df_geo["location"].map(country_dict)
+    df_geo["datetime"] = pd.to_datetime(df_geo["date"])
+    df_geo = df_geo[df_geo["datetime"].ge("01-01-2020")]
+    df_geo["week"] = df_geo['datetime'].dt.strftime('%U').astype(int)
+    df_geo.sort_values(by="week", ascending=True, inplace=True)
+
+    fig = px.scatter_geo(df_geo,
+                         locations="alpha",
+                         color="location",
+                         hover_name="location",
+                         size="total_cases",
+                         animation_frame="week",
+                         projection="natural earth")
     return fig
 
 
