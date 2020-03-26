@@ -278,8 +278,6 @@ country_dict = dict([(country,pc.country_name_to_country_alpha3(country ,cn_name
 df_geo["alpha"] = df_geo["location"].map(country_dict)
 df_geo["datetime"] = pd.to_datetime(df_geo["date"])
 df_geo = df_geo[df_geo["datetime"].ge("01-01-2020")]
-df_geo["min"] = df_geo["datetime"].min()
-df_geo["diff"] = int(str(df_geo["datetime"] - df_geo["min"])[:2])
 df_geo["week"] = df_geo['datetime'].dt.strftime('%U').astype(int)
 df_geo.sort_values(by="week", ascending=True, inplace=True)
 fig_geo_map = px.scatter_geo(df_geo,
