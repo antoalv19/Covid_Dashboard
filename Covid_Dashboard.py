@@ -15,6 +15,7 @@ import pycountry_convert as pc
 import pycountry
 import plotly.express as px
 import dash_auth
+
 # imposto account
 # USERNAME_PASSWORD_PAIRS = [
 #    ['endony', 'endony'], ["mamama", "endony"], ["covid19", "cocchino"]]
@@ -262,7 +263,7 @@ for location in state_data["location"].unique():
     df_temp["days_since"] = np.arange(len(df_temp))
     nuovo_df = pd.concat([nuovo_df, df_temp])
 
-""""# preparo dati e realizzo scatter geo
+# preparo dati e realizzo scatter geo
 
 df_geo = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
 
@@ -274,19 +275,13 @@ while i < len(list(pycountry.countries)):
     i += 1
 
 df_geo = df_geo[df_geo["location"].isin(country_list)].copy()
-country_dict = dict([(country,pc.country_name_to_country_alpha3(country ,cn_name_format="default")) for country in df_geo["location"].unique()])
+country_dict = dict([(country, pc.country_name_to_country_alpha3(country, cn_name_format="default")) for country in
+                     df_geo["location"].unique()])
 df_geo["alpha"] = df_geo["location"].map(country_dict)
 df_geo["datetime"] = pd.to_datetime(df_geo["date"])
 df_geo = df_geo[df_geo["datetime"].ge("01-01-2020")]
 df_geo["week"] = df_geo['datetime'].dt.strftime('%U').astype(int)
 df_geo.sort_values(by="week", ascending=True, inplace=True)
-fig_geo_map = px.scatter_geo(df_geo,
-                         locations="alpha",
-                         color="location",
-                         hover_name="location",
-                         size="total_cases",
-                         animation_frame="week",
-                         projection="natural earth")"""
 
 # Faccio Setup del Layout con Header, Input Box e grafico
 
@@ -481,9 +476,17 @@ app.layout = html.Div([
             # aggiungo i grafici
 
             dcc.Graph(id="my_state_1"),
-#            html.H2("Evoluzione Totale casi attivi dal 01-01-2020",
-#                    style={"textAlign": "center"}),
-#            dcc.Graph(id="my_map", figure=fig_geo_map),
+            html.H2("Evoluzione Totale casi attivi dal 01-01-2020",
+                    style={"textAlign": "center"}),
+            dcc.Graph(id="my_map", figure=
+                px.scatter_geo(df_geo,
+                               locations="alpha",
+                               color="location",
+                               hover_name="location",
+                               size="total_cases",
+                               animation_frame="week",
+                               projection="natural earth")
+            ),
             dcc.Graph(id="my_state_2"),
             dcc.Graph(id="my_state_3"),
             dcc.Graph(id="my_state_4"),
