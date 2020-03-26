@@ -12,9 +12,9 @@ import numpy as np
 import dash_table.FormatTemplate as FormatTemplate
 from dash_table.Format import Format, Scheme, Sign, Symbol
 import pycountry_convert as pc
-import pycountry
 import plotly.express as px
-import dash_auth
+# import dash_auth
+
 # imposto account
 # USERNAME_PASSWORD_PAIRS = [
 #    ['endony', 'endony'], ["mamama", "endony"], ["covid19", "cocchino"]]
@@ -262,34 +262,6 @@ for location in state_data["location"].unique():
     df_temp["days_since"] = np.arange(len(df_temp))
     nuovo_df = pd.concat([nuovo_df, df_temp])
 
-""""# preparo dati e realizzo scatter geo
-
-df_geo = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
-
-country_list = []
-i = 0
-
-while i < len(list(pycountry.countries)):
-    country_list.append(list(pycountry.countries)[i].__getattr__("name"))
-    i += 1
-
-df_geo = df_geo[df_geo["location"].isin(country_list)].copy()
-country_dict = dict([(country,pc.country_name_to_country_alpha3(country ,cn_name_format="default")) for country in df_geo["location"].unique()])
-df_geo["alpha"] = df_geo["location"].map(country_dict)
-df_geo["datetime"] = pd.to_datetime(df_geo["date"])
-df_geo = df_geo[df_geo["datetime"].ge("01-01-2020")]
-df_geo["min"] = df_geo["datetime"].min()
-df_geo["diff"] = int(str(df_geo["datetime"] - df_geo["min"])[:2])
-df_geo["week"] = df_geo['datetime'].dt.strftime('%U').astype(int)
-df_geo.sort_values(by="week", ascending=True, inplace=True)
-fig_geo_map = px.scatter_geo(df_geo,
-                         locations="alpha",
-                         color="location",
-                         hover_name="location",
-                         size="total_cases",
-                         animation_frame="week",
-                         projection="natural earth")"""
-
 # Faccio Setup del Layout con Header, Input Box e grafico
 
 app.layout = html.Div([
@@ -478,14 +450,21 @@ app.layout = html.Div([
                     value=["China", "Italy", "United States", "Spain", "France"],
                     multi=True
                 ),
-
-            ], style={"display": "inline-block", "verticalAlign": "top", "width": "40%"}),
+            ], style={"display": "inline-block"}),
+            html.Div([
+                html.Button(
+                    id="submit-button_3",
+                    n_clicks=0,
+                    children="Aggiorna",
+                    style={"fontSize": 24, "marginLeft": "30px"}
+                )
+            ], style={"display": "inline-block"}
+            ),
             # aggiungo i grafici
-
+            html.H2("Evoluzione Totale casi Attivi dal 01-01-2020 per Settimana",
+                    style={"textAlign": "center"}),
+            dcc.Graph(id="my_map"),
             dcc.Graph(id="my_state_1"),
-#            html.H2("Evoluzione Totale casi attivi dal 01-01-2020",
-#                    style={"textAlign": "center"}),
-#            dcc.Graph(id="my_map", figure=fig_geo_map),
             dcc.Graph(id="my_state_2"),
             dcc.Graph(id="my_state_3"),
             dcc.Graph(id="my_state_4"),
@@ -840,9 +819,10 @@ def update_graph_8(n_clicks, region_list, start_date, end_date):
 
 @app.callback(
     Output("my_state_1", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_1(state):
+def update_state_1(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -863,9 +843,10 @@ def update_state_1(state):
 
 @app.callback(
     Output("my_state_2", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_2(state):
+def update_state_2(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -886,9 +867,10 @@ def update_state_2(state):
 
 @app.callback(
     Output("my_state_3", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_3(state):
+def update_state_3(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -909,9 +891,10 @@ def update_state_3(state):
 
 @app.callback(
     Output("my_state_4", "figure"),
-    [Input("my_state", "value")],
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
 )
-def update_state_4(state):
+def update_state_4(n_clicks, state):
     # creo dataframe specifico con la regione selezionata:
 
     state_graph = [go.Scatter(
@@ -927,6 +910,38 @@ def update_state_4(state):
                    "xaxis": dict(title="Giorni Trascorsi dal 500mo Caso Rilevato"),
                    "yaxis": dict(title="Numero Casi")}
     }
+    return fig
+
+
+@app.callback(
+    Output("my_map", "figure"),
+    [Input("submit-button_3", "n_clicks")],
+    [State("my_state", "value")],
+)
+def update_map(n_clicks, state):
+    # creo dataframe specifico con la regione selezionata:
+
+    # preparo dati e realizzo scatter geo
+
+    df_geo = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
+
+    df_geo = df_geo[df_geo["location"].isin(state) & df_geo["location"].ne("World") &
+                    df_geo["location"].ne("International")].copy()
+    country_dict = dict([(country, pc.country_name_to_country_alpha3(country, cn_name_format="default")) for country in
+                         df_geo["location"].unique()])
+    df_geo["alpha"] = df_geo["location"].map(country_dict)
+    df_geo["datetime"] = pd.to_datetime(df_geo["date"])
+    df_geo = df_geo[df_geo["datetime"].ge("01-01-2020")]
+    df_geo["week"] = df_geo['datetime'].dt.strftime('%U').astype(int)
+    df_geo.sort_values(by="week", ascending=True, inplace=True)
+
+    fig = px.scatter_geo(df_geo,
+                         locations="alpha",
+                         color="location",
+                         hover_name="location",
+                         size="total_cases",
+                         animation_frame="week",
+                         projection="natural earth")
     return fig
 
 
