@@ -32,7 +32,7 @@ regioni = pd.read_csv(url_regioni, dtype={'dimessi_guariti': int,
                                           'ricoverati_con_sintomi': int,
                                           'terapia_intensiva': int,
                                           'deceduti': int,
-                                          "nuovi_attualmente_positivi": int,
+                                          "nuovi_positivi": int,
                                           "totale_casi": int,
                                           "tamponi": int, })
 
@@ -45,12 +45,12 @@ options = [{"label": regione, "value": regione} for regione in regioni["denomina
 
 colonne = ['dimessi_guariti', 'isolamento_domiciliare', 'ricoverati_con_sintomi', 'terapia_intensiva', 'deceduti']
 
-colonne_andamento = ['dimessi_guariti', "nuovi_attualmente_positivi", 'isolamento_domiciliare',
+colonne_andamento = ['dimessi_guariti', "nuovi_positivi", 'isolamento_domiciliare',
                      'ricoverati_con_sintomi', 'terapia_intensiva', 'deceduti', "totale_casi", "tamponi"]
 
 legenda_dict = {
     "dimessi_guariti": "Dimessi",
-    "nuovi_attualmente_positivi": "Nuovi Positivi",
+    "nuovi_positivi": "Nuovi Positivi",
     "isolamento_domiciliare": "Isolamento Domiciliare",
     "ricoverati_con_sintomi": "Ricoverati",
     "terapia_intensiva": "Terapia Intensiva",
@@ -60,13 +60,13 @@ legenda_dict = {
 
 colori_dict = {
     "dimessi_guariti": "#00FF00",
-    "nuovi_attualmente_positivi": "#FFFF00",
+    "nuovi_positivi": "#FFFF00",
     "isolamento_domiciliare": "#FFCC00",
     "ricoverati_con_sintomi": "#FF6600",
     "terapia_intensiva": "#FF0000",
     "deceduti": "#000000",
     "totale_casi": "#9900FF",
-    "totale_attualmente_positivi": "#9900FF",
+    "totale_positivi": "#9900FF",
 }
 
 index_dict = {'dimessi_guariti': "Dimessi e Guariti",
@@ -74,7 +74,7 @@ index_dict = {'dimessi_guariti': "Dimessi e Guariti",
               'ricoverati_con_sintomi': "Ricoverati",
               'terapia_intensiva': "Terapia Intensiva",
               'deceduti': "Deceduti",
-              "nuovi_attualmente_positivi": "Nuovi Positivi",
+              "nuovi_positivi": "Nuovi Positivi",
               "totale_casi": "Totale Casi",
               "tamponi": "Tamponi",
               }
@@ -155,7 +155,7 @@ trace_5 = go.Scatter(
 
 trace_6 = go.Scatter(
     x=totale_data["data"].unique(),
-    y=totale_data["nuovi_attualmente_positivi"],
+    y=totale_data["nuovi_positivi"],
     name="Nuovi Casi",
     marker=dict(color="#FFFF00"),
     mode="lines+markers",
@@ -163,7 +163,7 @@ trace_6 = go.Scatter(
 
 trace_7 = go.Scatter(
     x=totale_data["data"].unique(),
-    y=totale_data["totale_attualmente_positivi"],
+    y=totale_data["totale_positivi"],
     name="Totale Attualmente Positivi",
     marker=dict(color="#9900FF"),
     mode="lines+markers",
@@ -193,14 +193,14 @@ merge_var["Var. Percentuale"] = merge_var["Var. Assoluta"].div(merge_var[ieri])
 merge_var.reset_index(inplace=True)
 
 # preparo tabella e grafico nuovi positivi
-nuovi_positivi = pd.pivot_table(regioni, index=["data"], aggfunc={"nuovi_attualmente_positivi": np.sum})
+nuovi_positivi = pd.pivot_table(regioni, index=["data"], aggfunc={"nuovi_positivi": np.sum})
 data_new = [go.Bar(
     x=nuovi_positivi.index,
-    y=nuovi_positivi["nuovi_attualmente_positivi"],
-    text=nuovi_positivi["nuovi_attualmente_positivi"],
+    y=nuovi_positivi["nuovi_positivi"],
+    text=nuovi_positivi["nuovi_positivi"],
     hoverinfo="text",
     textposition="outside",
-    marker={'color': nuovi_positivi["nuovi_attualmente_positivi"],
+    marker={'color': nuovi_positivi["nuovi_positivi"],
             'colorscale': 'Sunset'}
 )]
 
@@ -239,7 +239,7 @@ regioni_area_geo = pd.pivot_table(data=regioni, index=["data", "denom_geo"], agg
 
 data_geo_chart = [go.Scatter(
     x=regioni_area_geo["data"].unique(),
-    y=regioni_area_geo[regioni_area_geo["denom_geo"].eq(area)]["nuovi_attualmente_positivi"],
+    y=regioni_area_geo[regioni_area_geo["denom_geo"].eq(area)]["nuovi_positivi"],
     mode="lines+markers",
     name=area) for area in regioni["denom_geo"].unique()]
 
@@ -595,7 +595,7 @@ def update_graph_2(n_clicks, region_list, start_date, end_date):
     for regione in region_list:
         trace = go.Scatter(
             x=df_region["data"].unique(),
-            y=df_region[df_region["denominazione_regione"].eq(regione)]["totale_attualmente_positivi"],
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["totale_positivi"],
             mode="lines+markers",
             name=regione)
         data.append(trace)
@@ -799,7 +799,7 @@ def update_graph_8(n_clicks, region_list, start_date, end_date):
     for regione in region_list:
         trace = go.Scatter(
             x=df_region["data"].unique(),
-            y=df_region[df_region["denominazione_regione"].eq(regione)]["nuovi_attualmente_positivi"],
+            y=df_region[df_region["denominazione_regione"].eq(regione)]["nuovi_positivi"],
             mode="lines+markers",
             name=regione)
         data.append(trace)
