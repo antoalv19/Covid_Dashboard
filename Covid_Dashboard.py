@@ -84,7 +84,7 @@ denom_geo = {'Campania': "Sud e Isole",
              'Puglia': "Sud e Isole",
              'P.A. Trento': "Nord",
              'Calabria': "Sud e Isole",
-             'Emilia Romagna': "Nord",
+             'Emilia-Romagna': "Nord",
              'Piemonte': "Nord",
              'Liguria': "Nord",
              'Friuli Venezia Giulia': "Nord",
@@ -392,7 +392,7 @@ app.layout = html.Div([
                 dcc.Dropdown(
                     id="my_region_2",
                     options=options,
-                    value=["Lombardia", "Campania", "Emilia Romagna", "Veneto", "Piemonte"],
+                    value=["Lombardia", "Campania", "Emilia-Romagna", "Veneto", "Piemonte"],
                     multi=True
                 ),
 
