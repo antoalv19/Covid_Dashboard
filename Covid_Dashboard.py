@@ -366,9 +366,9 @@ app.layout = html.Div([
                 dcc.DatePickerRange(
                     id="my_date_picker",
                     min_date_allowed=regioni["data_range"].min(),
-                    max_date_allowed=datetime.today(),
+                    max_date_allowed=regioni["data_range"].max(),
                     start_date=regioni["data_range"].min(),
-                    end_date=datetime.today(),
+                    end_date=regioni["data_range"].max(),
                 )
             ], style={"display": "inline-block"}),
             html.Div([
@@ -403,9 +403,9 @@ app.layout = html.Div([
                 dcc.DatePickerRange(
                     id="my_date_picker_2",
                     min_date_allowed=regioni["data_range"].min(),
-                    max_date_allowed=datetime.today(),
+                    max_date_allowed=regioni["data_range"].max(),
                     start_date=regioni["data_range"].min(),
-                    end_date=datetime.today(),
+                    end_date=regioni["data_range"].max(),
                 )
             ], style={"display": "inline-block"}),
             html.Div([
