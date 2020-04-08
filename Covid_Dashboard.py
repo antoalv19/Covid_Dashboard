@@ -13,6 +13,8 @@ import dash_table.FormatTemplate as FormatTemplate
 from dash_table.Format import Format, Scheme, Sign, Symbol
 import pycountry_convert as pc
 import plotly.express as px
+from plotly.subplots import make_subplots
+
 # import dash_auth
 
 # imposto account
@@ -109,74 +111,52 @@ provincia = provincia[provincia["denominazione_provincia"].ne("In fase di defini
 provincia["data_range"] = pd.to_datetime(provincia["data"], errors="coerce")
 provincia["data"] = provincia["data"].str[:10]
 
-# Preparo Grafico totale data
+# Preparo Grafico Tamponi
+tamponi_piv = pd.pivot_table(data=regioni, index="data", values=["totale_casi", "tamponi"],
+                             aggfunc=np.sum).diff().dropna()
+tamponi_piv["rate"] = tamponi_piv["totale_casi"].div(tamponi_piv["tamponi"]).mul(100).round(2)
+tamponi_piv.reset_index(inplace=True)
+fig_sole = make_subplots(specs=[[{"secondary_y": True}]])
 
+fig_sole.add_trace(go.Bar(
+    x=tamponi_piv["data"],
+    y=tamponi_piv["tamponi"],
+    name="Tamponi",
+    marker=dict(color="grey")
+), secondary_y=False)
+
+fig_sole.add_trace(go.Bar(
+    x=tamponi_piv["data"],
+    y=tamponi_piv["totale_casi"],
+    name="Nuovi Casi",
+    marker=dict(color="red")
+), secondary_y=False)
+
+fig_sole.add_trace(go.Scatter(
+    x=tamponi_piv["data"],
+    y=tamponi_piv["rate"],
+    name="Rapporto %",
+    mode="lines",
+    line=dict(
+        color="black")
+), secondary_y=True)
+
+# Add figure title
+fig_sole.update_layout(
+    title_text="Tamponi Giornalieri e Contagiati",
+    title_x=0.5
+)
+
+# Set x-axis title
+fig_sole.update_xaxes(title_text="Data Rilevamento")
+
+# Set y-axes titles
+fig_sole.update_yaxes(title_text="Numero Tamponi e Nuovi Casi", secondary_y=False)
+fig_sole.update_yaxes(title_text="Rapporto % Tamponi / Nuovi Casi", secondary_y=True)
+
+# Preparo tabella scostamento totale
 totale_data = pd.pivot_table(data=regioni, index="data", aggfunc=np.sum)
 totale_data.reset_index(inplace=True)
-trace_1 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["deceduti"],
-    name="Deceduti",
-    marker=dict(color="#000000"),
-    mode="lines+markers",
-)
-
-trace_2 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["terapia_intensiva"],
-    name="Terapia Intensiva",
-    marker=dict(color="#FF0000"),
-    mode="lines+markers",
-)
-
-trace_3 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["ricoverati_con_sintomi"],
-    name="Ricoverati",
-    marker=dict(color="#FF6600"),
-    mode="lines+markers",
-)
-
-trace_4 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["isolamento_domiciliare"],
-    name="Isolamento Domiciliare",
-    marker=dict(color="#FFCC00"),
-    mode="lines+markers",
-)
-
-trace_5 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["dimessi_guariti"],
-    name="Guariti",
-    marker=dict(color="#00FF00"),
-    mode="lines+markers",
-)
-
-trace_6 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["nuovi_positivi"],
-    name="Nuovi Casi",
-    marker=dict(color="#FFFF00"),
-    mode="lines+markers",
-)
-
-trace_7 = go.Scatter(
-    x=totale_data["data"].unique(),
-    y=totale_data["totale_positivi"],
-    name="Totale Attualmente Positivi",
-    marker=dict(color="#9900FF"),
-    mode="lines+markers",
-)
-
-data_tot = [trace_1, trace_2, trace_3, trace_4, trace_5, trace_6, trace_7]
-
-tot_layout = go.Layout(
-    title='Andamento Casi Totali per Data',
-    xaxis=dict(title="Data Rilevazione"),
-    yaxis=dict(title="Numero Casi")
-)
-# Preparo tabella scostamento totale
 totale_data.set_index("data", inplace=True)
 totale_var = totale_data[colonne_andamento]
 totale_var.fillna(0).sort_index(ascending=False).head().style.background_gradient(cmap='coolwarm')
@@ -341,10 +321,7 @@ app.layout = html.Div([
                           }
                           ),
                 dcc.Graph(id="my_graph_total",
-                          figure={
-                              "data": data_tot,
-                              "layout": tot_layout,
-                          }
+                          figure=fig_sole,
                           ),
             ])
         ]),
@@ -519,7 +496,7 @@ def update_province(n_clicks, region, start_date, end_date):
                         & provincia["data_range"].le(end_date)
                         & provincia["denominazione_provincia"].ne("In fase di definizione/aggiornamento")
                         & provincia["denominazione_provincia"].ne("denominazione_provincia")
-    ]
+                        ]
     prov_piv = pd.pivot_table(df_prov, index=["data", "denominazione_provincia"],
                               aggfunc={"totale_casi": np.sum}).sort_values(
         by=["totale_casi", "denominazione_provincia"],
