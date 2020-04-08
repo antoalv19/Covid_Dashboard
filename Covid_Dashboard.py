@@ -516,15 +516,19 @@ def update_province(n_clicks, region, start_date, end_date):
     # creo dataframe specifico con la regione selezionata:
     df_prov = provincia[provincia["denominazione_regione"].eq(region)
                         & provincia["data_range"].ge(start_date)
-                        & provincia["data_range"].le(end_date)]
+                        & provincia["data_range"].le(end_date)
+                        & provincia["denominazione_provincia"].ne("In fase di definizione/aggiornamento")
+                        & provincia["denominazione_provincia"].ne("denominazione_provincia")
+    ]
     prov_piv = pd.pivot_table(df_prov, index=["data", "denominazione_provincia"],
                               aggfunc={"totale_casi": np.sum}).sort_values(
         by=["totale_casi", "denominazione_provincia"],
         ascending=False)
     prov_piv.reset_index(inplace=True)
+    prov_piv["data_obj"] = prov_piv["data"].str[:10]
 
     prov_graph = [go.Bar(
-        x=prov_piv["data"].unique(),
+        x=prov_piv["data_obj"].unique(),
         y=prov_piv[prov_piv["denominazione_provincia"].eq(prov)]["totale_casi"],
         name=prov,
     ) for prov in prov_piv["denominazione_provincia"].unique()]
