@@ -424,7 +424,7 @@ app.layout = html.Div([
                 dcc.Dropdown(
                     id="my_state",
                     options=country_options,
-                    value=["China", "Italy", "United States", "Spain", "France"],
+                    value=["Italy", "United States", "Spain", "France", "Germany"],
                     multi=True
                 ),
             ], style={"display": "inline-block"}),
