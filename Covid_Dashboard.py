@@ -905,6 +905,8 @@ def update_map(n_clicks, state):
     # preparo dati e realizzo scatter geo
 
     df_geo = pd.read_csv(r"https://covid.ourworldindata.org/data/ecdc/full_data.csv")
+    
+    df_geo.fillna(value=0, inplace=True)
 
     df_geo = df_geo[df_geo["location"].isin(state) & df_geo["location"].ne("World") &
                     df_geo["location"].ne("International")].copy()
