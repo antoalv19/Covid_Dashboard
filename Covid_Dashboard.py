@@ -116,6 +116,7 @@ tamponi_piv = pd.pivot_table(data=regioni, index="data", values=["totale_casi", 
                              aggfunc=np.sum).diff().dropna()
 tamponi_piv["rate"] = tamponi_piv["totale_casi"].div(tamponi_piv["tamponi"]).mul(100).round(2)
 tamponi_piv.reset_index(inplace=True)
+tamponi_piv = tamponi_piv[tamponi_piv["tamponi"]>0]
 fig_sole = make_subplots(specs=[[{"secondary_y": True}]])
 
 fig_sole.add_trace(go.Bar(
